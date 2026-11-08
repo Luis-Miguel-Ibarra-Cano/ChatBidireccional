@@ -92,20 +92,3 @@ Son dos programas y dos clases auxiliares pequenas. No requiere base de datos, f
 El registro de usuarios es un `HashMap`. Los metodos que lo utilizan llevan `synchronized` para que los hilos no modifiquen el registro al mismo tiempo. El cliente y las dos clases auxiliares utilizan `Thread`, sin lambdas, interfaces propias ni expresiones regulares.
 
 El protocolo usa una linea UTF-8 por trama, con campos separados por tabuladores: `LOGIN` identifica, `LIST` consulta usuarios, `MSG` envia un mensaje y `QUIT` solicita la salida. El servidor responde con `OK`, `USERS`, `FROM`, `BYE` o `ERROR`.
-
-## Compilar desde PowerShell
-
-Desde esta carpeta:
-
-```powershell
-$jdkChat = 'C:\Users\libarra\.jdks\temurin-11.0.32.1'
-New-Item -ItemType Directory -Force -Path bin | Out-Null
-& "$jdkChat\bin\javac.exe" --release 11 -encoding UTF-8 -d bin src/chat/ServidorChat.java src/chat/ClienteChat.java src/chat/AtencionCliente.java src/chat/ReceptorMensajes.java
-& "$jdkChat\bin\java.exe" -Dfile.encoding=UTF-8 -cp bin chat.ServidorChat
-```
-
-En otras dos terminales, ejecutar:
-
-```powershell
-& 'C:\Users\libarra\.jdks\temurin-11.0.32.1\bin\java.exe' -Dfile.encoding=UTF-8 -cp bin chat.ClienteChat
-```
