@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ChatBidireccional"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="chat.ServidorChat"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfile.encoding=UTF-8"/>
+    <stringAttribute key="org.eclipse.debug.core.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
+</launchConfiguration>
