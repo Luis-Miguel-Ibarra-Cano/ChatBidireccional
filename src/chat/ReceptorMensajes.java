@@ -3,7 +3,7 @@ package chat;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-// Recibe mensajes mientras el usuario escribe en la consola.
+/** Escucha al servidor y muestra sus respuestas sin bloquear el teclado. */
 public class ReceptorMensajes extends Thread {
     private final BufferedReader entrada;
     private final ClienteChat cliente;
@@ -13,6 +13,7 @@ public class ReceptorMensajes extends Thread {
         this.cliente = cliente;
     }
 
+    /** Recibe listas, mensajes y errores hasta la despedida o el cierre de la conexión. */
     @Override
     public void run() {
         try {
@@ -22,6 +23,7 @@ public class ReceptorMensajes extends Thread {
                     System.out.println("Sesion finalizada: chao");
                     return;
                 }
+                // Se separan hasta tres campos: operación, emisor y contenido del mensaje.
                 String[] campos = linea.split("\t", 3);
                 if (campos[0].equals("USERS") && campos.length > 1) {
                     System.out.println("Usuarios conectados: [" + campos[1] + "]");
@@ -36,6 +38,7 @@ public class ReceptorMensajes extends Thread {
         } catch (IOException error) {
             System.out.println("Conexion terminada: " + error.getMessage());
         } finally {
+            // Si termina la recepción, también termina la conexión del cliente.
             cliente.cerrarConexion();
         }
     }

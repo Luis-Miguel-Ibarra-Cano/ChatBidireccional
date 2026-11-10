@@ -1,4 +1,6 @@
+# Preferencias del compilador Java de Eclipse.
 eclipse.preferences.version=1
+# Mantiene el lenguaje, las clases compiladas y las API en el nivel de Java 11.
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=11
 org.eclipse.jdt.core.compiler.compliance=11
 org.eclipse.jdt.core.compiler.source=11

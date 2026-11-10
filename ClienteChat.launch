@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Cada ejecución de esta configuración abre un cliente independiente. -->
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <!-- Define cómo Eclipse interpreta los caracteres de la consola. -->
     <stringAttribute key="org.eclipse.debug.core.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <!-- Vincula la configuración con el archivo fuente del cliente. -->
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/ChatBidireccional/src/chat/ClienteChat.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
     </listAttribute>
+    <!-- Opciones de lanzamiento conservadas por Eclipse; no forman parte del chat. -->
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <!-- Indica la clase de inicio y el proyecto al que pertenece. -->
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="chat.ClienteChat"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="ChatBidireccional"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ChatBidireccional"/>
+    <!-- UTF-8 permite mostrar correctamente el texto enviado por los usuarios. -->
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfile.encoding=UTF-8"/>
 </launchConfiguration>

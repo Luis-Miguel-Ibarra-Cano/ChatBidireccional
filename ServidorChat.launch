@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Ejecuta el servidor como una aplicación Java local desde Eclipse. -->
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <!-- Identifica el proyecto y la clase que contiene el método main. -->
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ChatBidireccional"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="chat.ServidorChat"/>
+    <!-- Mantiene UTF-8 tanto en la salida del programa como en la consola. -->
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfile.encoding=UTF-8"/>
     <stringAttribute key="org.eclipse.debug.core.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
 </launchConfiguration>

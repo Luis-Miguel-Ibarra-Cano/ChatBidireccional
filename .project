@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Describe el proyecto para que Eclipse pueda importarlo y reconocerlo como Java. -->
 <projectDescription>
     <name>ChatBidireccional</name>
     <comment>Chat de consola con sockets TCP para Java 11.</comment>
     <projects></projects>
     <buildSpec>
+        <!-- Compila las fuentes cuando Eclipse construye el proyecto. -->
         <buildCommand>
             <name>org.eclipse.jdt.core.javabuilder</name>
             <arguments></arguments>
         </buildCommand>
     </buildSpec>
     <natures>
+        <!-- Habilita las herramientas de desarrollo Java de Eclipse. -->
         <nature>org.eclipse.jdt.core.javanature</nature>
     </natures>
 </projectDescription>

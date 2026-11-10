@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-// Un hilo atiende una conexion sin bloquear a los demas usuarios.
+/** Atiende una conexión en el servidor sin detener la aceptación de otros clientes. */
 public class AtencionCliente extends Thread {
     private final Socket socketCliente;
     private final ServidorChat servidor;
@@ -19,9 +19,11 @@ public class AtencionCliente extends Thread {
         this.servidor = servidor;
     }
 
+    /** Identifica al usuario y procesa sus solicitudes hasta que termina la conexión. */
     @Override
     public void run() {
         try {
+            // UTF-8 conserva los caracteres; BufferedReader permite leer mensajes por línea.
             InputStreamReader lector = new InputStreamReader(
                     socketCliente.getInputStream(), StandardCharsets.UTF_8);
             BufferedReader entrada = new BufferedReader(lector);
@@ -31,6 +33,7 @@ public class AtencionCliente extends Thread {
             if (login == null) {
                 return;
             }
+            // El tabulador separa la operación de sus datos; -1 conserva los campos vacíos.
             String[] campos = login.split("\t", -1);
             if (campos.length != 2 || !campos[0].equals("LOGIN")) {
                 enviarLinea("ERROR\tNombre invalido o falta LOGIN");
@@ -46,6 +49,7 @@ public class AtencionCliente extends Thread {
                 return;
             }
 
+            // QUIT solicita salir, LIST consulta usuarios y MSG entrega un mensaje.
             String linea = entrada.readLine();
             while (linea != null) {
                 if (linea.equals("QUIT")) {
@@ -66,6 +70,7 @@ public class AtencionCliente extends Thread {
         } catch (IOException error) {
             System.out.println("Conexion interrumpida: " + error.getMessage());
         } finally {
+            // También se limpia la sesión si hay un error o el cliente se desconecta.
             servidor.retirarUsuario(nombre, this);
             try {
                 socketCliente.close();
@@ -75,7 +80,8 @@ public class AtencionCliente extends Thread {
         }
     }
 
-    // println envia una linea completa; true activa el vaciado automatico.
+    /** Envía una línea completa sin mezclarla con otro envío a la misma sesión. */
+    // El escritor vacía el búfer automáticamente; checkError() comprueba la escritura.
     public synchronized boolean enviarLinea(String linea) {
         salida.println(linea);
         return !salida.checkError();

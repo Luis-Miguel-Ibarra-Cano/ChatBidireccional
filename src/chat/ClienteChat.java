@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-// Punto de entrada del cliente. Cada ejecucion representa un usuario.
+/** Representa a un usuario; su hilo lee el teclado mientras otro recibe mensajes. */
 public class ClienteChat extends Thread {
     private Socket socketCliente;
     private BufferedReader consola;
@@ -26,6 +26,7 @@ public class ClienteChat extends Thread {
         }
     }
 
+    /** Solicita los datos, abre la conexión y espera la confirmación del servidor. */
     private void iniciarChat() throws IOException, InterruptedException {
         InputStreamReader lectorConsola = new InputStreamReader(System.in, StandardCharsets.UTF_8);
         consola = new BufferedReader(lectorConsola);
@@ -34,11 +35,13 @@ public class ClienteChat extends Thread {
         String nombre = pedirDato("Nombre de usuario:");
 
         socketCliente = new Socket();
+        // Los 5000 milisegundos limitan el intento de conexión, no la duración del chat.
         socketCliente.connect(new InetSocketAddress(ip, puerto), 5000);
         InputStreamReader lector = new InputStreamReader(
                 socketCliente.getInputStream(), StandardCharsets.UTF_8);
         BufferedReader entrada = new BufferedReader(lector);
         salida = new PrintWriter(socketCliente.getOutputStream(), true, StandardCharsets.UTF_8);
+        // LOGIN identifica al usuario; el servidor debe responder OK con el mismo nombre.
         salida.println("LOGIN\t" + nombre);
         String respuesta = entrada.readLine();
         if (!("OK\t" + nombre).equals(respuesta)) {
@@ -49,13 +52,15 @@ public class ClienteChat extends Thread {
         System.out.println("Seleccione un usuario antes de escribir mensajes");
 
         ReceptorMensajes receptor = new ReceptorMensajes(entrada, this);
-        // El teclado no retiene el proceso si el servidor cierra la conexion.
+        // El hilo del teclado no mantiene vivo el programa si termina el receptor.
         setDaemon(true);
         receptor.start();
         start();
+        // El método principal espera al receptor antes de cerrar la conexión.
         receptor.join();
     }
 
+    /** Solicita un dato obligatorio y elimina espacios sobrantes en sus extremos. */
     private String pedirDato(String etiqueta) throws IOException {
         System.out.println(etiqueta);
         String valor = consola.readLine();
@@ -65,6 +70,7 @@ public class ClienteChat extends Thread {
         return valor.trim();
     }
 
+    /** Interpreta la consola: consulta usuarios, selecciona destinatario o envía texto. */
     @Override
     public void run() {
         String destinatario = null;
@@ -76,6 +82,7 @@ public class ClienteChat extends Thread {
                 } else if (texto.equals("/usuarios")) {
                     salida.println("LIST");
                 } else if (texto.startsWith("/con ")) {
+                    // La selección se guarda aquí; el servidor verifica el destino al enviar.
                     destinatario = texto.substring(5).trim();
                     System.out.println("Conversando con " + destinatario);
                 } else if (destinatario == null) {
@@ -90,6 +97,7 @@ public class ClienteChat extends Thread {
                 }
                 texto = consola.readLine();
             }
+            // Se solicita salir tanto al escribir «chao» como al terminar la entrada.
             salida.println("QUIT");
         } catch (IOException error) {
             System.err.println("Error en consola: " + error.getMessage());
@@ -97,6 +105,7 @@ public class ClienteChat extends Thread {
         }
     }
 
+    /** Cierra el socket y sus flujos; puede llamarse desde los dos hilos del cliente. */
     public synchronized void cerrarConexion() {
         if (socketCliente != null) {
             try {
